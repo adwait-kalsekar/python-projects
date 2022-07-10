@@ -13,11 +13,24 @@ def clear():
 
 
 cards = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
+deck_cards = ['A', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K']
 
 
 def deal_cards():
-    card = random.choice(cards)
-    return card
+    deck_card = random.choice(deck_cards)
+    return deck_card
+
+
+def deck_cards_to_cards(player_deck_cards):
+    player_cards = []
+    for card in player_deck_cards:
+        if card == 'A':
+            player_cards.append(11)
+        elif card == 'J' or card == 'Q' or card == 'K':
+            player_cards.append(10)
+        else:
+            player_cards.append(card)
+    return player_cards
 
 
 def calculate_score(player_cards):
@@ -50,36 +63,39 @@ def compare_score(user_score, computer_score):
 
 
 def play_game():
-    user_cards = []
-    computer_cards = []
+    user_deck_cards = []
+    computer_deck_cards = []
     is_game_over = False
 
     for _ in range(2):
-        user_cards.append((deal_cards()))
-        computer_cards.append(deal_cards())
+        user_deck_cards.append((deal_cards()))
+        computer_deck_cards.append(deal_cards())
 
     while not is_game_over:
+        user_cards = deck_cards_to_cards(user_deck_cards)
+        computer_cards = deck_cards_to_cards(computer_deck_cards)
         user_score = calculate_score(user_cards)
         computer_score = calculate_score(computer_cards)
 
-        print(f"    Your Cards are {user_cards} and Your Score is {user_score}")
-        print(f"    Opponents Card is [{computer_cards[0]}]")
+        print(f"    Your Cards are {user_deck_cards} and Your Score is {user_score}")
+        print(f"    Opponents Card is [{computer_deck_cards[0]}]")
 
         if user_score == 0 or computer_score == 0 or user_score > 21:
             is_game_over = True
         else:
-            deal = input("Enter y to deal or any other input to pass: ")
+            deal = input("\n\nEnter y to deal or any other input to pass: ")
             if deal == 'y' or deal == 'Y':
-                user_cards.append(deal_cards())
+                user_deck_cards.append(deal_cards())
             else:
                 is_game_over = True
 
     while computer_score != 0 and computer_score < 17:
-        computer_cards.append(deal_cards())
+        computer_deck_cards.append(deal_cards())
+        computer_cards = deck_cards_to_cards(computer_deck_cards)
         computer_score = calculate_score(computer_cards)
 
-    print(f"    Your final hand: {user_cards}, final score: {user_score}")
-    print(f"    Computer's final hand: {computer_cards}, final score: {computer_score}\n\n")
+    print(f"    Your final hand: {user_deck_cards}, final score: {user_score}")
+    print(f"    Computer's final hand: {computer_deck_cards}, final score: {computer_score}\n\n")
     print(compare_score(user_score, computer_score))
 
 
@@ -92,5 +108,5 @@ if __name__ == '__main__':
         if choice == 'y' or choice == 'Y':
             play_game()
         else:
-            print("Thanks for playing!")
+            print("Thanks for playing!\n\n")
             exit(0)
