@@ -12,11 +12,11 @@ def clear():
         _ = system('clear')
 
 
-cards = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
 deck_cards = ['A', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K']
 
 
 def deal_cards():
+    global deck_cards
     deck_card = random.choice(deck_cards)
     return deck_card
 
@@ -65,6 +65,8 @@ def compare_score(user_score, computer_score):
 def play_game():
     user_deck_cards = []
     computer_deck_cards = []
+    user_score = 0
+    computer_score = 0
     is_game_over = False
 
     for _ in range(2):
